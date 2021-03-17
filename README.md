@@ -27,7 +27,7 @@ let polar      = OklabColorPolar(ns: black)
 let stillBlack = NSColor(polar)
 ```
 
-Manipulating hue and chroma is easy with a polar Oklab color. The idea behind Oklab is that shifts in hue do not change perceived brightness or chroma. Hue is stored in radians, but you can translate that to degrees with `hueDegrees`, mutate the hue in degrees with `setHueTo(_:)`  or `setHueRotatedBy(_:)`, and instantiate a new color with `withHue(_:)`  or `withHueRotatedBy(_:)`. 
+Manipulating hue and chroma is easy with a polar Oklab color. The idea behind Oklab is that shifts in hue do not change perceived brightness or chroma. While hue is stored in radians, a few functions help manipulate hue in degrees.
 
 ```swift
 let pink = OklabColorPolar(lightness: 0.5, chroma: 0.24, hueDegrees: 0)
@@ -50,13 +50,16 @@ The `OklabColor` and `OklabPolarColor` structs are defined as below. `Channel` i
 ```swift
 struct OklabColor {
 
-    /// Perceptual lightness. To achieve pure black or white, also adjust chroma (polar) or a/b     channels (cartesian).
+    /// Perceptual lightness. To achieve pure black or white, 
+    /// also adjust chroma (polar) or a/b channels (cartesian).
     var lightness: Channel
     
-    /// Green to red. Range varies. Could span about -0.6...0.6 in medium brightness.
+    /// Green to red. 
+    /// Range can span about -0.6...0.6 in medium brightness.
     var a: Channel
     
-    /// Yellow to blue. Range varies. Could span about -0.55...0.8 in medium brightness.
+    /// Yellow to blue. 
+    /// Range can span about -0.55...0.8 in medium brightness.
     var b: Channel
     
     /// Opacity 0...1
@@ -78,7 +81,7 @@ struct OklabColorPolar {
     ///  Chroma
     var chroma: Channel
     
-    /// Originally set in 0...2π when converted from a cartesian color
+    /// Set in the 0...2π range when converted from a cartesian color
     var hueRadians: Channel
     
     var hueDegrees: Channel {
