@@ -2,17 +2,13 @@ import Foundation
 
 public extension OklabColorPolar {
     
-    /// Green/red
+    /// - Returns: Green/red channel
     func getA() -> Channel {
-        C * cos(h)
+        chroma * cos(hueRadians)
     }
     
-    /// Blue/yellow
+    /// - Returns: Blue/yellow channel
     func getB() -> Channel {
-        C * sin(h)
-    }
-    
-    func getOklabCartesianColor() -> OklabColor {
-        OklabColor(polar: self)
+        chroma * sin(hueRadians)
     }
 }

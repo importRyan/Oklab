@@ -1,13 +1,13 @@
 import Foundation
 
-/// Convenience initializers exist. These are just "autocomplete documentation".
-struct Oklab { private init() {} }
+/// More convenient initializers exist. This is just "autocomplete documentation".
+public struct Oklab { private init() {} }
 
 #if canImport(SwiftUI)
 import SwiftUI
 
 @available(iOS 14.0, OSX 11, watchOS 6.0, tvOS 13, *)
-extension Oklab {
+public extension Oklab {
     func convert(swiftUI: Color) -> OklabColor {
         OklabColor(swiftUI: swiftUI)
     }
@@ -21,7 +21,7 @@ import UIKit
 #endif
 
 #if canImport(UIKit)
-extension Oklab {
+public extension Oklab {
     func convert(ui: UIColor) -> OklabColor {
         OklabColor(ui: ui)
     }
@@ -29,7 +29,7 @@ extension Oklab {
 #endif
 
 #if canImport(AppKit) && !targetEnvironment(macCatalyst)
-extension Oklab {
+public extension Oklab {
 
     func convert(ns: NSColor) -> OklabColor {
         OklabColor(ns: ns)
@@ -39,7 +39,7 @@ extension Oklab {
 #endif
 
 #if canImport(AppKit) || canImport(UIKit)
-extension Oklab {
+public extension Oklab {
     
     func convert(srgbCG: CGColor) -> OklabColor {
         OklabColor(cg: srgbCG)

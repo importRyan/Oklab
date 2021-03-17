@@ -7,10 +7,17 @@ public extension OklabColor {
         let (srgb, alpha) = ns.getSRGBComponents()
         let oklab = Conversions.linearSRGBToOklab(srgb.decodeSRGBGamma())
         
-        self.L = oklab[0]
+        self.lightness = oklab[0]
         self.a = oklab[1]
         self.b = oklab[2]
         self.alpha = alpha
+    }
+}
+
+public extension OklabColorPolar {
+    
+    init(ns: NSColor) {
+        self.init(OklabColor(ns: ns))
     }
 }
 
@@ -25,17 +32,12 @@ public extension NSColor {
     }
     
     convenience init(_ oklabpolar: OklabColorPolar) {
-        let oklab = OklabColor(polar: oklabpolar)
-        let srgb = Conversions.oklabToLinearSRGB(oklab.vector).encodeSRGBGamma()
-        self.init(srgbRed: CGFloat(srgb.x),
-                  green: CGFloat(srgb.y),
-                  blue: CGFloat(srgb.z),
-                  alpha: CGFloat(oklab.alpha))
+        self.init(OklabColor(oklabpolar))
     }
 }
 
 
-public extension NSColor {
+internal extension NSColor {
     
     func getSRGBComponents() -> (color: SIMD3<Channel>, alpha: Channel) {
         guard let color = asValid_sRGBComponentBased()

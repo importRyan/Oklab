@@ -7,23 +7,36 @@ import UIKit
 #if canImport(AppKit) || canImport(UIKit)
 public extension OklabColor {
     
+    /// CGColor uses a static func `makeFromOklab` for the return trip.
     init(cg: CGColor) {
         let (srgb, alpha) = cg.getSRGBComponents()
         let oklab = Conversions.linearSRGBToOklab(srgb.decodeSRGBGamma())
         
-        self.L = oklab[0]
+        self.lightness = oklab[0]
         self.a = oklab[1]
         self.b = oklab[2]
         self.alpha = alpha
     }
 }
 
+public extension OklabColorPolar {
+    
+    /// CGColor uses a static func `makeFromOklabPolar` for the return trip.
+    init(cg: CGColor) {
+        self.init(OklabColor(cg: cg))
+    }
+}
+
 public extension CGColor {
     
-    func makeFromOklab(_ oklab: OklabColor) -> CGColor? {
+    static func makeFromOklab(_ oklab: OklabColor) -> CGColor? {
         let srgb = Conversions.oklabToLinearSRGB(oklab.vector).encodeSRGBGamma()
-        let components = [srgb.x, srgb.y, srgb.z, oklab.alpha].map(CGFloat.init)
+        let components = [srgb.x, srgb.y, srgb.z, oklab.alpha].map { CGFloat($0) }
         return CGColor(colorSpace: esrgb, components: components)
+    }
+    
+    static func makeFromOklabPolar(_ polar: OklabColorPolar) -> CGColor? {
+        makeFromOklab(OklabColor(polar))
     }
 }
 

@@ -18,65 +18,79 @@ Inits move any `NSColor` `UIColor` `Color` `CIColor` or `CGColor` to the Oklab c
 ```swift
 import Oklab
 
-let original = NSColor.black
-let ok = OklabColor(ns: original)
-let stillBlack = NSColor(ok)
+let black      = NSColor.black
+
+let oklab      = OklabColor(ns: black)
+let stillBlack = NSColor(oklab)
+
+let polar      = OklabColorPolar(ns: black)
+let stillBlack = NSColor(polar)
 ```
 
-When manipulating a cartesian color doesn't suit you, get a polar Oklab color — or just the chroma and hue components — as below.
+Manipulating hue and chroma is easy with a polar Oklab color. The idea behind Oklab is that shifts in hue do not change perceived brightness or chroma. Hue is stored in radians, but you can translate that to degrees with `hueDegrees`, mutate the hue in degrees with `setHueTo(_:)`  or `setHueRotatedBy(_:)`, and instantiate a new color with `withHue(_:)`  or `withHueRotatedBy(_:)`. 
 
 ```swift
-let cartesian = OklabColor(lightness: 0, a: 0, b: 0, alpha: 1)
-let polar = OklabColorPolar(cartesian)
-let polar = cartesian.getPolarOklabColor()
+let pink = OklabColorPolar(lightness: 0.5, chroma: 0.24, hueDegrees: 0)
+let blue = pink.withHueRotatedBy(degrees: 240)
 
+let cartesian = OklabColor(lightness: 0.5, a: 0.2, b: 0.1, alpha: 1)
+var polar     = OklabColorPolar(cartesian)
+polar.setHueTo(degrees: 120)
+polar.setHueRotatedBy(degrees: -90)
+
+// Cartesian colors also report chroma and hue
 let hueAngle = cartesian.getHueAngleDegrees()
 let hueAngle = cartesian.getHueAngleRadians()
-let chroma = cartesian.getChroma()
+let chroma   = cartesian.getChroma()
 ```
+
 
 The `OklabColor` and `OklabPolarColor` structs are defined as below. `Channel` is a typealias for `Float`. For an idea about the ranges for the `a` and `b` channels, see Björn's Munsell plot preserved above or [on his GitHub.](https://bottosson.github.io/img/oklab/oklab_munsell.png)
 
 ```swift
-public struct OklabColor {
+struct OklabColor {
 
-    /// Perceived lightness
-    public var L: Channel
+    /// Perceptual lightness. To achieve pure black or white, also adjust chroma (polar) or a/b     channels (cartesian).
+    var lightness: Channel
     
-    /// Green/red
-    public var a: Channel
+    /// Green to red. Range varies. Could span about -0.6...0.6 in medium brightness.
+    var a: Channel
     
-    /// Yellow/blue
-    public var b: Channel
+    /// Yellow to blue. Range varies. Could span about -0.55...0.8 in medium brightness.
+    var b: Channel
     
-    /// Alpha 0...1
-    public var alpha: Channel
+    /// Opacity 0...1
+    var alpha: Channel
     
-    /// Vector construct of Lab channels
-    public var vector: SIMD3<Channel> {
-        SIMD3<Channel>(L, a, b)
+    /// Vector construct of Lab channels for SIMD-based calculations
+    var vector: SIMD3<Channel> {
+        SIMD3<Channel>(lightness, a, b)
     }
 }
 
 ```
 ```swift
-public struct OklabColorPolar {
+struct OklabColorPolar {
     
     /// Perceived lightness
-    public var L: Channel
+    var lightness: Channel
     
     ///  Chroma
-    public var C: Channel
+    var chroma: Channel
     
-    /// Hue angle in radians
-    public var h: Channel
+    /// Originally set in 0...2π when converted from a cartesian color
+    var hueRadians: Channel
+    
+    var hueDegrees: Channel {
+        var degrees = hueRadians * 180 / .pi
+        
+        while degrees < 0   { degrees += 360 }
+        while degrees > 360 { degrees -= 360 }
+        return degrees
+    }
     
     /// Alpha 0...1
-    public var alpha: Channel
-    
-    public var hueDegrees: Channel {
-        abs((h * 180 / .pi) - 360)
-    }
+    var alpha: Channel
 }
 ```
 

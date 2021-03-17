@@ -3,7 +3,7 @@ import AppKit
 import XCTest
 @testable import Oklab
 
-final class CIColorTests: XCTestCase {
+final class NSColorTests: XCTestCase {
     
     func testBlack_ConversionAndRoundTrip() {
         
