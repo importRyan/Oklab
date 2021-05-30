@@ -5,10 +5,10 @@ import PackageDescription
 let package = Package(
     name: "Oklab",
     platforms: [
-        .iOS(.v10),
+        .iOS(.v11),
         .macOS(.v10_13),
-        .tvOS(.v10),
-        .watchOS(.v6)
+        .tvOS(.v14),
+        .watchOS(.v7)
     ],
     products: [
         .library(

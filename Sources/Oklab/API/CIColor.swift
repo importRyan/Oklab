@@ -1,10 +1,10 @@
-#if canImport(AppKit) && !targetEnvironment(macCatalyst)
+#if canImport(AppKit) && !targetEnvironment(macCatalyst) && !os(watchOS)
 import AppKit
 #else
 import UIKit
 #endif
 
-#if canImport(AppKit) || canImport(UIKit)
+#if !os(watchOS) && (canImport(AppKit) || canImport(UIKit))
 
 public extension OklabColor {
     

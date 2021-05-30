@@ -3,6 +3,7 @@ import Foundation
 /// More convenient initializers exist. This is just "autocomplete documentation".
 public struct Oklab { private init() {} }
 
+#if !os(watchOS)
 #if canImport(SwiftUI)
 import SwiftUI
 
@@ -45,8 +46,11 @@ public extension Oklab {
         OklabColor(cg: srgbCG)
     }
     
+    #if !os(watchOS)
     func convert(srgbCI: CIColor) -> OklabColor {
         OklabColor(srgbCI: srgbCI)
     }
+    #endif
 }
+#endif
 #endif

@@ -1,7 +1,8 @@
+
 #if canImport(SwiftUI)
 import SwiftUI
 
-@available(iOS 14.0, OSX 11, watchOS 6.0, tvOS 13, *)
+@available(iOS 14.0, OSX 11, watchOS 6.0, tvOS 14, *)
 public extension OklabColor {
     
     init(swiftUI: Color) {
@@ -13,7 +14,7 @@ public extension OklabColor {
     }
 }
 
-@available(iOS 14.0, OSX 11, watchOS 6.0, tvOS 13, *)
+@available(iOS 14.0, OSX 11, watchOS 6.0, tvOS 14, *)
 public extension OklabColorPolar {
 
     init(swiftUI: Color) {
@@ -21,7 +22,7 @@ public extension OklabColorPolar {
     }
 }
 
-@available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 13, *)
+@available(iOS 13.0, OSX 10.15, watchOS 6.0, tvOS 14, *)
 public extension Color {
     
     init(_ oklab: OklabColor) {

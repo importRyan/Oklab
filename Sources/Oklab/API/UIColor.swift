@@ -32,7 +32,7 @@ public extension UIColor {
     }
     
     convenience init(_ oklabpolar: OklabColorPolar) {
-        self.init(OklabColor(polar: oklabpolar))
+        self.init(OklabColor(oklabpolar))
     }
 }
 
